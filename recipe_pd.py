@@ -1,112 +1,56 @@
 import numpy as np
 import pandas as pd
-import seaborn as sns
-#==========
-# pandas
-#==========
+titanic = pd.read_csv("./data/titanic.csv", index_col="PassengerId")
 
-#===== Series =====
+#====================
+# common
+#====================
 
-#=== コンストラクタ
-x=pd.Series([0,0.5,1,1.5,2])
-y=pd.Series([0,0.5,1,1.5,2],index=[0,2,4,6,8])
-z=pd.Series({"e":0,"d":0.5,"c":1,"b":1.5,"a":2})#辞書
-mi=pd.Series({
-    ("nigata",2000):100
-    ,("nigata",2010):200
-    ,("tokyo",2000):100
-    ,("tokyo",2005):300
-})#多階層インデクス
-
-mi=pd.DataFrame(
-    {
-        2000:pd.Series({"nigata":100,"tokyo":200})
-        ,2005:pd.Series({"tokyo":100})
-        ,2010:pd.Series({"nigata":100,"tokyo":300})
-    }
-)
-mi
-mi=mi.stack()
-
-#=== 属性
-#dir(x)
-x.values#ndarray
-z.index#indexは勝手にソートされる
-#z.keys()#上に同じ
-#list(z.items())#参考まで
-print(x.size,x.shape,x.ndim,x.dtype)#ndarrayとかなり重複する
-
-#=== アクセス
-#スライシング
-#x[:2]#基本はndarrayと一緒
-#y[1:4]
-#y[6:8]#この範囲の要素はない
-#z["a":"c"]
-
-#ピンポイント
-#y[4]#何番目、ではなくindexが一致する要素
-#z["a"]
-
-#label_location,integer_location
-y.loc[0:8]#両端含む
-y.iloc[0:3]#3は含まず
-mi.loc[:,:2005]#単純に次元が追加されたと解釈するとよい
-
-#データ追加
-z["aa"]=9#追加しただけではソートされない
-
-#=== 演算
-x=pd.Series([0,0.5,1,1.5,2])
-
-print(x.sum(),x.mean())
+#=== DatetimeIndex =====
+pd.to_datetime(["2015-01-01","2016-01-01"])
+pd.to_datetime(["2015年01月01日","2016年01月01日"],format="%Y年%m月%d日")
 
 
-#=== 文字列操作
-x=pd.Series(["dairyou","taika","ohmi","taisei"])
 
-x.str.len()
-x.str.contains("ai")#re.search()を適用しているらしい
-#上記以外にもメソッドいっぱいあるから要確認
+#===================
+# Series
+#===================
 
-#=== 時系列データ型
-pd.to_datetime(["2015-01-01","2016-01-01"])#dtypeはdatetime64らしい
-pd.to_datetime(["2015年01月01日","2016年01月01日"],format="%Y年%m月%d日")#書式の指定
+#===== prepare =====
+x = pd.Series([1, 2, 3, 4, 5])
+y = titanic["Name"][:10]
 
+#=== attributes =====
+x.values # np.ndarray
+x.dtype # np.dtype
+x.size # int
+y.index
 
-#=== ソート　※スライシングを行うためには重要
-z.sort_index()#上書きはされない
+#=== indexing and slicing =====
+x[:2] # simple but ambiguous
+y.iloc[1] # different from y[1]
 
-#===== コンストラクタ =====
-#=== Seriesから
-pd.DataFrame(pd.Series([0,1,2]))
-pd.DataFrame({"salary":pd.Series([100,200,300]),"age":pd.Series([20,21,22])})
-pd.DataFrame({
-    "salary":pd.Series({"a":100,"b":200,"b":300,"c":300})
-    ,"age":pd.Series({"b":21,"b":23,"b":21,"d":24,"e":25,"e":20})
-})
-#上は悪い例
-#indexの欠損はNaNで埋まるが、Series内のindexの重複は挙動が不明だから避けたい
+#=== aggregate =====
+x.sum()
+x.mean()
 
-#=== ndarrayから
-pd.DataFrame(np.random.random((3,2)),columns=["a","b"],index=[1,2,3])
-#pd.DataFrame(np.zeros(3,dtype=[("name","U10"),("age","i4")]))#構造化配列から
+#=== str accessor =====
+y.str.len()
+y.str.replace("\(.+\)", "")
 
-#=== 辞書のリストから
-pd.DataFrame([{"a":i,"b":i*2,"c":i*3} for i in range(5)])
+#====================
+# DataFrame
+#====================
 
-#=== 多階層インデクス
-mi=pd.DataFrame(np.hstack([np.random.random((4,2)),np.array(["a","a","b","b"])[:,np.newaxis],np.array([1,2,1,2])[:,np.newaxis]]),columns=["c1","c2","class","number"])
-mi=mi.set_index(["class","number"])
+#===== prepare =====
+x = pd.DataFrame({"number": [1, 2, 3], "name": ["mickey", "donald", "goofy"]})
+y = 
 
-#===== 属性 =====
-data=pd.DataFrame(np.random.random((3,2)),columns=["a","b"],index=[1,2,3])
-mi=pd.DataFrame(np.hstack([np.random.random((4,2)),np.array(["a","a","b","b"])[:,np.newaxis],np.array([1,2,1,2])[:,np.newaxis]]),columns=["c1","c2","class","number"])
-mi=mi.set_index(["class","number"])
-
-data.values#ndarray
-data.columns
-data.index
-mi.index.names#levelとして指定するときに便利かも
+#===== attributes =====
+x.values # ndarray
+x.columns
+x.index
+mi.index.names # levelとして指定するときに便利かも
 
 #===== 変形 =====
 data=pd.DataFrame(np.random.random((3,2)),columns=["a","b"],index=[1,2,3])
