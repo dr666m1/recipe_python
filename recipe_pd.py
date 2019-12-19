@@ -29,12 +29,15 @@ x.mean()
 y.str.len()
 y.str.replace("\(.+\)", "")
 
+#===== transform =====
+y.apply(lambda x: x[:5])
+
 #====================
 # DataFrame
 #====================
 
 #===== prepare =====
-x = pd.DataFrame({"salary": [100, 200, np.nan], "name": ["mickey", "donald", "goofy"]}, index=range(1, 4))
+x = pd.DataFrame({"salary": [100, 200, np.nan, 100], "name": ["mickey", "donald", "goofy", "mickey"]}, index=range(1, 5))
 y = census[["area_code", "type", "value"]].copy() # deep copy
 y["lvl"] = y["area_code"].str.len()
 y.set_index(["area_code", "type"], inplace=True)
@@ -42,6 +45,12 @@ z = pd.DataFrame({"value":range(9)}, index=pd.date_range("2018-08-01", "2018-08-
 a = y.query("type == '人口総数'").copy()
 b = y.query("type == '世帯総数'").copy()
 c = y.query("lvl == 5").copy()
+
+#===== preprocessing =====
+x.replace({"name": {"mickey": "minnie"}})
+
+#===== explore =====
+x.drop_duplicates() # select distinct
 
 #===== attributes =====
 x.values # ndarray
@@ -61,7 +70,6 @@ y.reset_index("type") # index -> column
 y.reset_index("type").set_index("type", append=True) # column -> index
 
 #===== concat, merge, ... =====
-
 #=== concat
 pd.concat([x, x])
 pd.concat([x, x], axis=1)
@@ -80,12 +88,13 @@ y[["value", "lvl"]]
 
 #=== conditional expression
 y[y["lvl"] == 5]
-y.query("lvl == 5")
+y.query("type == '人口総数'")
+# level seems also available
 
 #=== label_location, integer_location
 x.loc[1, :]
 x.iloc[1, :]
-#z.loc["2018", ] 
+z.loc["2018-08-01", :]
 
 #=== MultiIndex
 y.sort_index(inplace=True) # important!
@@ -122,10 +131,11 @@ z.reset_index().resample("D", on="index").mean() # column is also available
 #===== nan =====
 #=== detect
 x.isnull()
-x.isnull().sum()
+x.isnull().sum() # count
 
 #=== remove
 x.dropna()
 
 #=== fill
 x.fillna(0)
+
