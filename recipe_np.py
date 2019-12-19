@@ -71,7 +71,7 @@ np.sum(z) # True... 1, False... 0
 np.any(z)
 np.all(z)
 
-#=== boolean
+#===== boolean =====
 np.array([True, True, False]) & np.array([False, True, False])
 np.array([True, True, False]) | np.array([False, True, False])
 np.array([True, True, False]) ^ np.array([False, True, False]) # exclusive or
