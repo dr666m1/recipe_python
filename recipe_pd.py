@@ -10,6 +10,7 @@ census = pd.read_csv("./data/census2015.csv", names=["cat01_code", "type", "cat0
 #===== prepare =====
 x = pd.Series([1, 2, 3, 4, 5])
 y = titanic["Name"][:10]
+z = pd.Series(["a", "b", "c", "d", "e", "a", "a", "b"])
 
 #===== attributes =====
 x.values # np.ndarray
@@ -20,6 +21,10 @@ y.index
 #===== indexing, slicing, ... =====
 x[:2] # simple but ambiguous
 y.iloc[1] # different from y[1]
+
+#===== explore =====
+z.unique()
+z.value_counts()
 
 #===== calculation =====
 x.sum()

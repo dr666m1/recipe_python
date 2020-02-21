@@ -63,9 +63,7 @@ np.max(y)
 np.min(y)
 np.mean(y)
 np.var(y)
-# np.sum((y - np.mean(y)) ** 2) / len(y)
 np.var(y, ddof=1)
-# np.sum((y - np.mean(y)) ** 2) / (len(y) - 1)
 np.std(y)
 np.sum(z) # True... 1, False... 0
 np.any(z)
@@ -78,12 +76,14 @@ np.array([True, True, False]) ^ np.array([False, True, False]) # exclusive or
 ~np.array([True, True, False])
 
 #===== sort =====
-nnp.sort(y)
+np.sort(y)
 # y.sort() # orverwrite
 
-p.argsort(y) # return order
+np.argsort(y) # return order
 # y.argsort()
 
 #===== copy =====
 a = x.copy() # deep copy
 
+#===== other =====
+np.unique(z, return_counts=True)
