@@ -111,7 +111,7 @@ a.max()
 a.describe() # summary
 
 #=== group by
-c.groupby(["type"]).mean()["value"]
+c.groupby(["type"]).mean()["value"] # as_index=False
 c.groupby(["type"]).aggregate([np.mean, np.median])["value"]
 
 c.groupby(["type"]).filter(lambda x: x["value"].min() > 300)
@@ -143,4 +143,7 @@ x.dropna()
 
 #=== fill
 x.fillna(0)
+
+#===== other =====
+y.sort_values("value", ascending=False)
 
