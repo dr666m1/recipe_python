@@ -18,7 +18,7 @@ x.dtype # np.dtype
 x.size # int
 y.index
 
-#===== indexing, slicing, ... =====
+#===== extract data (indexing, slicing, ...) =====
 x[:2] # simple but ambiguous
 y.iloc[1] # different from y[1]
 
@@ -86,10 +86,11 @@ pd.merge(a, b, on="area_code", how="outer")# full join
 pd.merge(a, b, left_on="area_code", right_on="area_code")
 # column name is also available
 
-#===== indexing, slicing, ...  =====
+#===== extract data (indexing, slicing, ...)  =====
 #=== Series
 y["value"]
 y[["value", "lvl"]]
+x.loc[:, x.columns.str.contains(r"^names?$")] # select using regex
 
 #=== conditional expression
 y[y["lvl"] == 5]
