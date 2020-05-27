@@ -76,7 +76,7 @@ y.reset_index("type").set_index("type", append=True) # column -> index
 
 #===== concat, merge, ... =====
 #=== concat
-pd.concat([x, x])
+pd.concat([x, x]) # ignore_index=True is useful
 pd.concat([x, x], axis=1)
 
 #=== merge
